@@ -1,14 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-
+import { useState, useEffect } from 'react'
+import { todayGetDay } from "utils/time";
 const TodoHeadBlock = styled.div`
-  display: flex;
-  justify-content: center;
   padding-top: 52px;
   padding-bottom: 24px;
   border-bottom: 3px solid #33bb77;
 `;
 
+const DateBlock = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 const DateText = styled.div`
   font-size: 26px;
   color: #119955;
@@ -21,15 +24,31 @@ const DayText = styled.div`
   padding-top: 5px;
 `;
 
+const TimeText = styled.div`
+  font-size: 22px;
+  color: #119955;
+  padding-top: 5px;
+  display: flex;
+  justify-content: center;
+`;
+
 const TodoHead = () => {
   //@TODO 현재 시간을 표시해야합니다.
-  const dayString = "Tuesday";
-  const dateString = "July 20, 2021";
+  const [ today, setToday ] = useState(todayGetDay())
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setToday(todayGetDay())
+    }, 1000)
+    return () => clearInterval(intervalId)
+  },[])
 
   return (
     <TodoHeadBlock>
-      <DayText>{dayString}</DayText>
-      <DateText>{dateString}</DateText>
+      <DateBlock>
+        <DayText>{today.day}</DayText>
+        <DateText>{today.month} {today.date}, {today.year}</DateText>
+      </DateBlock>
+      <TimeText>{today.hour} : {today.minute} : {today.second}</TimeText>
     </TodoHeadBlock>
   );
 };
