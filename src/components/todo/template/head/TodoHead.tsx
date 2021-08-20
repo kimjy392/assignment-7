@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useState, useEffect } from 'react'
-import { todayGetDay } from "utils/time";
+import  moment from "moment";
 const TodoHeadBlock = styled.div`
   padding-top: 52px;
   padding-bottom: 24px;
@@ -34,10 +34,10 @@ const TimeText = styled.div`
 
 const TodoHead = () => {
   //@TODO 현재 시간을 표시해야합니다.
-  const [ today, setToday ] = useState(todayGetDay())
+  const [ today, setToday ] = useState(moment())
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setToday(todayGetDay())
+      setToday(moment())
     }, 1000)
     return () => clearInterval(intervalId)
   },[])
@@ -45,10 +45,10 @@ const TodoHead = () => {
   return (
     <TodoHeadBlock>
       <DateBlock>
-        <DayText>{today.day}</DayText>
-        <DateText>{today.month} {today.date}, {today.year}</DateText>
+        <DayText>{today.format("dddd")}</DayText>
+        <DateText>{today.format("MMMM D, YYYY")}</DateText>
       </DateBlock>
-      <TimeText>{today.hour} : {today.minute} : {today.second}</TimeText>
+      <TimeText>{today.format("HH : mm : ss")}</TimeText>
     </TodoHeadBlock>
   );
 };
