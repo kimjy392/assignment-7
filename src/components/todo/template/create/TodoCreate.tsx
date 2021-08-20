@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { PlusCircleOutlined } from "@ant-design/icons";
+import { DatePicker, Modal } from "antd";
+import moment, { Moment } from "moment";
 import { Itodo } from "components/todo/TodoService";
+import { todoItemModalword } from "./constants/modal";
 
 const CircleButton = styled.button<{ open: boolean }>`
   background: #33bb77;
@@ -62,6 +65,15 @@ const TodoCreate = ({
 }: TodoCreateProps) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
+  const [ date, setDate ] = useState(moment())
+
+  const disabledDate = (current: Moment) => {
+    return current && current < moment().subtract(1, 'days').endOf('day');
+  }
+
+  const handleDateChange = (current: Moment | null) => {
+    setDate(current || moment())
+  }
 
   const handleToggle = () => setOpen(!open);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -69,14 +81,21 @@ const TodoCreate = ({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // 새로고침 방지
-
+    if (!value) {
+      Modal.warning({
+        title : todoItemModalword.title,
+        content: todoItemModalword.content
+      })
+      return
+    }
     createTodo({
       id: nextId,
       text: value,
-      done: false
+      done: false,
+      endDate: date.format("YYYY-MM-DD"),
     });
     incrementNextId(); // nextId 하나 증가
-
+    setDate(moment())
     setValue(""); // input 초기화
     setOpen(false); // open 닫기
   };
@@ -91,7 +110,11 @@ const TodoCreate = ({
             onChange={handleChange}
             value={value}
           />
-
+          <DatePicker
+            value={date}
+            disabledDate={disabledDate}
+            onChange={handleDateChange}>
+          </DatePicker>
           <CircleButton onClick={handleToggle} open={open}>
             <PlusCircleOutlined />
           </CircleButton>

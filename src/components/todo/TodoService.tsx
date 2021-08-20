@@ -1,29 +1,47 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
+import moment from "moment";
+import { useState, useEffect, useRef } from "react";
 
 export type Itodo = {
   id: number;
   text: string;
   done: boolean;
+  endDate: string
 };
 
 let initialTodos: Itodo[] = [];
 
 export const useTodo = () => {
   const [todoState, setTodoState] = useState(initialTodos);
-  var nextIdState = 0;
+  const nextIdState = useRef(0);
 
   useEffect(() => {
     loadData();
   }, []);
 
   useEffect(() => {
-    saveData();
+    saveData(); 
   }, [todoState]);
 
   const incrementNextId = () => {
-    nextIdState = nextIdState + 1;
+    nextIdState.current ++;
   };
+
+  const computedNextId = (todo : Itodo[]) : number => {
+    let max = 0
+    todo.forEach((item) => {
+      max = Math.max(item.id, max)
+    })
+    return max + 1
+  }
+
+  const sortTodoList = (todoList : Itodo[]) : Itodo[] => {
+    return todoList.sort((preTodo : Itodo, nextTodo : Itodo) => {
+      const preEndDate = moment(preTodo.endDate)
+      const nextEndDate = moment(nextTodo.endDate)
+      return preEndDate.diff(nextEndDate)
+    })
+  }
 
   const toggleTodo = (id: number) => {
     //@TODO
@@ -34,27 +52,31 @@ export const useTodo = () => {
 
   const removeTodo = (id: number) => {
     setTodoState((prevState) =>
-      prevState.filter((todo: Itodo) => todo.id === id)
+      prevState.filter((todo: Itodo) => todo.id !== id)
     );
   };
 
   const createTodo = (todo: Itodo) => {
-    const nextId = todoState.length + 1;
+    const nextId = nextIdState.current
     setTodoState((prevState) =>
-      prevState.concat({
+      sortTodoList(prevState.concat({
         ...todo,
         id: nextId
-      })
+      }))
     );
   };
+
+  const clearDoneTodo = () => {
+    setTodoState((preState) => 
+      preState.filter((todo : Itodo) => !todo.done)
+    )
+  }
 
   const loadData = () => {
     let data = localStorage.getItem("todos");
     if (data === undefined) data = "";
     initialTodos = JSON.parse(data!);
-    if (initialTodos && initialTodos.length >= 1) {
-      incrementNextId();
-    }
+    nextIdState.current = computedNextId(initialTodos)
     setTodoState(initialTodos);
   };
 
@@ -64,10 +86,11 @@ export const useTodo = () => {
 
   return {
     todoState,
-    nextIdState,
+    nextIdState : nextIdState.current,
     incrementNextId,
     toggleTodo,
     removeTodo,
-    createTodo
+    createTodo,
+    clearDoneTodo
   };
 };

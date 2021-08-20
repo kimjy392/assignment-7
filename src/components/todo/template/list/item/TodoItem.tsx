@@ -1,4 +1,5 @@
 import { CheckOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Modal } from "antd";
 import { Itodo } from "components/todo/TodoService";
 import React from "react";
 import styled, { css } from "styled-components";
@@ -43,7 +44,24 @@ const CheckCircle = styled.div<{ done: boolean }>`
 `;
 
 const Text = styled.div<{ done: boolean }>`
+  flex: 2;
+  height: 100%;
+  font-size: 16px;
+  white-space: nowrap;
+  color: #119955;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  ${(props) =>
+    props.done &&
+    css`
+      color: #ced4da;
+      text-decoration: line-through;
+    `}
+`;
+
+const DateText = styled.div<{ done: boolean }>`
   flex: 1;
+  margin-left: 10px;
   font-size: 16px;
   color: #119955;
   ${(props) =>
@@ -66,15 +84,26 @@ const TodoItem = ({ toggleTodo, removeTodo, todo }: TodoItemProps) => {
     toggleTodo(id)
   };
 
-  const handleRemove = () => {};
+  const handleRemove = (id: number) => {
+    removeTodo(id)
+  };
+
+  const onOpenModal = (todo: Itodo) => {
+    Modal.info({
+      title : "Todo",
+      content: todo.text,
+      okText: "Cancel"
+    })
+  }
 
   return (
     <TodoItemBlock>
       <CheckCircle done={done} onClick={() => handleToggle(todo.id)}>
         {done && <CheckOutlined />}
       </CheckCircle>
-      <Text done={done}>{todo.text}</Text>
-      <Remove onClick={handleRemove}>
+      <Text onClick={() => onOpenModal(todo)} done={done}>{todo.text}</Text>
+      <DateText done={done}>{todo.endDate}</DateText>
+      <Remove onClick={() => {handleRemove(todo.id)}}>
         <DeleteOutlined />
       </Remove>
     </TodoItemBlock>
