@@ -1,46 +1,51 @@
-# Getting Started with Create React App
+## 1. 과제 구현 목록
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- 현재 시간 표시
 
-## Available Scripts
+- 완료 버튼 클릭 시 Todo 완료
 
-In the project directory, you can run:
+- 완료 목표일 추가
 
-### `npm start`
+- Datapicker를 통해 완료일 입력
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Todo 타이틀을 적지 않고 생성버튼 클릭 시 모달을 통해 알림
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- 버그 수정
 
-### `npm test`
+  - id가 겹치는 경우에 생기는 버그로  id를 계산하여 유일한 값일 수 있도록 수정
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* 추가 구현
+  * 완료한 Todo 일괄 제거
+  * 긴 타이틀 글 작성 시 말 줄임표
+  * 타이틀 글 클릭 시 모달을 이용해 해당 타이틀을 볼 수 있도록 개선
+  * Datapicker에서 완료일 선택 시 현재 날짜보다 과거는 선택하지 못하도록 개선
+  * 완료일에 따른 Todo 정렬
 
-### `npm run build`
+​    
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 2. 설치 및 시작하는 법
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+이 프로젝트는 Create React App으로 생성되었습니다.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- This project was bootstrapped with Create React App.
 
-### `npm run eject`
+### 실행 가능한 스크립트
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### `npm i`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+프로젝트에 필요한 npm packages, node_modules 다운로드
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+#### `npm run start`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+개발모드로 웹 환경을 시작하는 명령어로 접속주소는 [http://localhost:3000](http://localhost:3000/) 입니다.
 
-## Learn More
+#### `npm run build`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+빌드하는 명령어로 현재 설정되어있는 환경 변수에 따라 빌드 됩니다. (cra 기본설정)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+## 3. 배포
+
+> https://youthful-galileo-69465d.netlify.app/
+
